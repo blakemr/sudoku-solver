@@ -29,7 +29,7 @@ def sudoku_solver(puzzle) -> list:
 
     cell = 0
     passes = 0
-    p_snapshot = puzzle.copy()
+    n_snapshot = notes.copy()
 
     while len(notes) > 0:
 
@@ -43,11 +43,11 @@ def sudoku_solver(puzzle) -> list:
         if cell == 0:
             passes += 1
 
-        if cell == 0 and p_snapshot == puzzle:
+        if cell == 0 and n_snapshot == notes:
             print("solver got stuck")
             break
         elif cell == 0:
-            p_snapshot = puzzle.copy()
+            n_snapshot = notes.copy()
 
     print("passes: {}".format(passes))
     return puzzle
