@@ -1,3 +1,4 @@
+from functools import lru_cache
 
 test_puzzle = [
     0, 2, 4, 0, 0, 0, 0, 9, 3,
@@ -45,6 +46,7 @@ def sudoku_solver(puzzle) -> list:
 
         if cell == 0 and n_snapshot == notes:
             print("solver got stuck")
+            print(notes)
             break
         elif cell == 0:
             n_snapshot = notes.copy()
@@ -73,24 +75,35 @@ def update_cell(index, notes, puzzle):
 
 
 def rcb_set(index, puzzle) -> set:
-    r = index // 9
-    c = index % 9
-    b = (c // 3) + 3 * (r // 3)  # box column + 3 * box row
+    r, c, b = get_rcb(index)
 
     row = set()
     column = set()
     box = set()
 
     for i, v in enumerate(puzzle):
-        if i // 9 == r:
+        x, y, z = get_rcb(i)
+
+        if x == r:
             row.add(v)
-        if i % 9 == c:
+        if y == c:
             column.add(v)
-        if (((i % 9) // 3) + (3 * ((i // 9) // 3))) == b:
+        if z == b:
             box.add(v)
 
     return set.union(row, box, column) - {0}
 
+@lru_cache(81)
+def get_rcb(index):
+    r = index // 9
+    c = index % 9
+    b = (c // 3) + 3 * (r // 3)  # box column + 3 * box row
+
+    return r, c, b
+
+
+def check_unique_notes(index, puzzle, notes):
+    r, c, b = get_rcb(index)
 
 if __name__ == "__main__":
     puzzle = sudoku_solver(test_puzzle_hard)
