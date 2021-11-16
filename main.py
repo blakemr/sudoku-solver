@@ -102,8 +102,16 @@ def get_rcb(index):
     return r, c, b
 
 
-def check_unique_notes(index, puzzle, notes):
-    r, c, b = get_rcb(index)
+def update_rcbs(puzzle, notes):
+    pass
+    # do these checks for all rows, columns and boxes.
+    # find unique sets. ex: doubles and triples, and remove
+    # other options from those sets
+
+    # new plan: loop 1-9 over and over, and look in each rcb for these sets.
+    # is this the same/better than checking for naked singles?
+
+    # I'd think so, since a single is just a unique case where it only goes in 1 spot
 
 if __name__ == "__main__":
     puzzle = sudoku_solver(test_puzzle_hard)
