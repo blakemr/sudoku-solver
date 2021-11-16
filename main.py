@@ -11,11 +11,24 @@ test_puzzle = [
     0, 5, 0, 0, 7, 0, 0, 8, 1
 ]
 
+test_puzzle_hard = [
+    0, 1, 0, 0, 3, 5, 0, 0, 0,
+    0, 0, 0, 0, 6, 0, 1, 0, 7,
+    0, 2, 3, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 6, 0, 2,
+    0, 7, 0, 1, 0, 9, 0, 4, 0,
+    4, 0, 2, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 8, 7, 0,
+    7, 0, 4, 0, 5, 0, 0, 0, 0,
+    0, 0, 0, 3, 4, 0, 0, 9, 0
+]
+
 
 def sudoku_solver(puzzle) -> list:
     notes = init_notes(puzzle)
 
     cell = 0
+    passes = 0
     p_snapshot = puzzle.copy()
 
     while len(notes) > 0:
@@ -27,12 +40,16 @@ def sudoku_solver(puzzle) -> list:
         # if no progress was made in the pass
         cell = (cell + 1) % len(puzzle)
 
+        if cell == 0:
+            passes += 1
+
         if cell == 0 and p_snapshot == puzzle:
             print("solver got stuck")
             break
         elif cell == 0:
             p_snapshot = puzzle.copy()
 
+    print("passes: {}".format(passes))
     return puzzle
 
 
@@ -76,7 +93,7 @@ def rcb_set(index, puzzle) -> set:
 
 
 if __name__ == "__main__":
-    puzzle = sudoku_solver(test_puzzle)
+    puzzle = sudoku_solver(test_puzzle_hard)
 
     for i in range(9):
         print(puzzle[i*9:(i+1)*9])
