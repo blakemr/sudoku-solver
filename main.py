@@ -32,6 +32,9 @@ def sudoku_solver(puzzle) -> list:
     passes = 0
     n_snapshot = notes.copy()
 
+    # sets of indicies?
+    # TODO: Change the dictionary so the key is the value of the cell and the value is the set of cells that number could be in
+
     while len(notes) > 0:
 
         if cell in notes:
@@ -94,24 +97,41 @@ def rcb_set(index, puzzle) -> set:
     return set.union(row, box, column) - {0}
 
 @lru_cache(81)
-def get_rcb(index):
+def get_rcb(index) -> tuple:
     r = index // 9
     c = index % 9
     b = (c // 3) + 3 * (r // 3)  # box column + 3 * box row
 
     return r, c, b
 
+@lru_cache(9)
+def get_rcb_indicies(index) -> tuple:
+    r = set()
+    c = set()
+    b = set()
+
+    for i in range(81):
+        x, y, z = get_rcb(i)
+
+        if x == index:
+            r.add(i)
+        if y == index:
+            c.add(i)
+        if z == index:
+            b.add(i)
+    
+    return r, c, b
+
 
 def update_rcbs(puzzle, notes):
-    pass
-    # do these checks for all rows, columns and boxes.
-    # find unique sets. ex: doubles and triples, and remove
-    # other options from those sets
+    for i in range(9):
+        # row
+        row_i = [i for i in range(i * 9, (i + 1) * 9) if i in notes]
 
-    # new plan: loop 1-9 over and over, and look in each rcb for these sets.
-    # is this the same/better than checking for naked singles?
 
-    # I'd think so, since a single is just a unique case where it only goes in 1 spot
+        # column
+
+        # box
 
 if __name__ == "__main__":
     puzzle = sudoku_solver(test_puzzle_hard)
